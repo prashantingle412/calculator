@@ -1,0 +1,97 @@
+syntax = "proto3";
+
+package cwztpsvc;
+
+import "google/api/annotations.proto";
+
+
+option go_package = "github3.cisco.com/ROBOT/robot-api/golang/cwztpsvc";
+
+//database schema
+message StaticRoute {
+    // unique uuid for subnet mask
+    string uuid = 1;
+    // subnet
+    string subnet= 2;
+    // mask
+    string mask = 3;
+    // status of the subnet and mask
+    string status = 4;
+    // operation e.g add or delete
+    string operation = 5;
+
+    string message = 6;  
+}
+
+//single object 
+message AddStaticRoute {
+    string subnet= 1;
+    string mask = 2;
+}
+
+//request body for add static route []AddStaticRoute
+message AddStaticRouteRequest {
+    repeated AddStaticRoute addStaticRoutList = 1;    
+}
+
+// response for AddStaticRoute 
+message AddStaticRouteResponse {
+        int32 code = 1;     
+        string message = 2;
+}
+// Fetch query request
+message StaticRouteGetRequest {
+    Filter filter = 1;
+}
+
+message Filter {
+    int32 pageSize = 1; 
+}
+// Fetch query response
+message StaticRouteGetResponse {
+       repeated StaticRoute StaticRouteEntityList = 1;    
+       string status = 2;
+}
+// rpc methods for AddStaticRoute and GetStaticRoute
+service StaticRouteService {
+
+    rpc AddStaticRoute(AddStaticRouteRequest) returns (AddStaticRouteResponse) {
+        option (google.api.http) = {
+            post: "/v1/staticroute"
+            body: "*"
+        };
+    }
+// rpc method for GET static route
+    rpc GetStaticRoute(StaticRouteGetRequest) returns (StaticRouteGetResponse) {
+    option (google.api.http) = {
+        post: "/v1/staticroute/query"
+        body: "*"
+        };
+    }
+// rpc method for delete static route
+    rpc DeleteStaticRoute(DeleteStaticRouteRequest) returns (DeleteStaticRouteResponse) {
+        option (google.api.http) = {
+            delete: "/v1/staticroute"
+            body: "*"        
+        };
+    }
+ 
+}
+
+
+// for delete
+message DeleteStaticRoute {
+    string uuid = 1;
+
+}
+// for delete request
+message DeleteStaticRouteRequest {
+
+    repeated DeleteStaticRoute deleteStaticRouteList = 1;
+}
+// for delete response
+message DeleteStaticRouteResponse {
+
+    int32 code = 1;
+    string message = 2;
+}

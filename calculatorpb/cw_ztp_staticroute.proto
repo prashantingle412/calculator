@@ -1,4 +1,4 @@
-syntax = "proto3"
+syntax = "proto3";
 
 package cwztpsvc;
 
@@ -45,7 +45,7 @@ message StaticRouteGetRequest {
 }
 
 message Filter {
-    int pageSize = 1; 
+    int32 pageSize = 1; 
 }
 // Fetch query response
 message StaticRouteGetResponse {
